@@ -3,7 +3,7 @@
   $DBhost = "localhost";
   $DBuser = "root";
   $DBpass = "";
-  $DBname = "hlms";
+  $DBname = "booking";
 
   date_default_timezone_set('Africa/Nairobi');
 

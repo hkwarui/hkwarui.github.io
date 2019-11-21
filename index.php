@@ -1,4 +1,5 @@
 <?php
+include('includes/Dbconnect.php');
 if (isset($_POST['btn-login'])) {
  $username =  trim($_POST['username']);
  $password =  trim($_POST['password']);
@@ -8,9 +9,11 @@ if (isset($_POST['btn-login'])) {
  $password = $DBcon->real_escape_string($password);
  $pass = sha1($password);
 
- $query = $DBcon->query("SELECT username, status, category, password FROM login WHERE username ='$username' AND password = '$pass' ");
- $row=$query->fetch_array();
- $count = $query->num_rows; // if username/password are correct returns must be 1 row
+ $query = "SELECT log_username, log_status, log_category, log_password FROM user_login WHERE log_username ='$username' AND log_password = '$pass' ";
+ $result = $DBcon->query($query);
+ $row = $result->fetch_array();
+ //$row= $result->fetch_array();
+ $count = $result->num_rows; // if username/password are correct returns must be 1 row
 
  if ($count==1) {
     if($row['login_status'] == 1)
@@ -53,7 +56,7 @@ if (isset($_POST['btn-login'])) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Log in</title>
+  <title>Bus Booking  | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -86,7 +89,7 @@ if (isset($_POST['btn-login'])) {
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
 
-    <form action="../../index2.html" method="post">
+    <form id="form-login" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="username" placeholder="Username">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -105,7 +108,7 @@ if (isset($_POST['btn-login'])) {
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat" name="btn-login">Sign In</button>
         </div>
         <!-- /.col -->
       </div>
