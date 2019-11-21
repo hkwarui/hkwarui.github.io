@@ -1,5 +1,12 @@
 <?php
-include('includes/Dbconnect.php');
+session_start();
+require_once 'includes/Dbconnect.php';
+
+if (isset($_SESSION['username'])!="") {
+header("Location: user/home.php");
+exit;
+}
+
 if (isset($_POST['btn-login'])) {
  $username =  trim($_POST['username']);
  $password =  trim($_POST['password']);
