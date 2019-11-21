@@ -14,29 +14,29 @@ if (isset($_POST['btn-login'])) {
  $row = $result->fetch_array();
  //$row= $result->fetch_array();
  $count = $result->num_rows; // if username/password are correct returns must be 1 row
-
+   echo $row['log_username'];
  if ($count==1) {
-    if($row['login_status'] == 1)
+    if($row['log_status'] == 1)
       {
-        if($row['login_category'] == 0)
+        if($row['log_category'] == 0)
           {
-             $_SESSION['username'] = $row['login_username'];
-             $_SESSION['categorySession'] = $row['login_category'];
-             $_SESSION['status'] = $row['login_status'];
+             $_SESSION['username'] = $row['log_username'];
+             $_SESSION['categorySession'] = $row['log_category'];
+             $_SESSION['status'] = $row['log_status'];
 
              header("Location: user/home.php");
              exit;
           }
-       if($row['login_category'] == 1)
+       if($row['log_category'] == 1)
           {
-            $_SESSION['username'] = $row['login_username'];
-            $_SESSION['categorySession'] = $row['login_category'];
-            $_SESSION['status'] = $row['login_status'];
+            $_SESSION['username'] = $row['log_username'];
+            $_SESSION['categorySession'] = $row['log_category'];
+            $_SESSION['status'] = $row['log_status'];
             header("Location: admin/home.php");
             exit;
           }
       }
-    if($row['login_status'] == 0)
+    if($row['log_status'] == 0)
       {
         $msg = "<div class='alert alert-danger'>
         <span class='glyphicon glyphicon-info-sign'></span> &nbsp; Account is Deactivated!.Contact Admin </div>";
@@ -90,6 +90,11 @@ if (isset($_POST['btn-login'])) {
     <p class="login-box-msg">Sign in to start your session</p>
 
     <form id="form-login" method="post">
+    <?php 
+    if(isset($msg)){
+      echo $msg;
+    }
+    ?>
       <div class="form-group has-feedback">
         <input type="text" class="form-control" name="username" placeholder="Username">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
