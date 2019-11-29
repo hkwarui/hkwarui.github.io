@@ -1,22 +1,21 @@
  <?php
 
-     include("../includes/Dbconnect.php");
-     include("../auth.php");
+     include("Dbconnect.php");
+     include("auth.php");
 
       $eid = $_SESSION['username'];
-      $query = $DBcon->query("SELECT * FROM employee_table WHERE employee_id ='$eid'");
+      $query = $DBcon->query("SELECT * FROM users_details WHERE user_code ='$eid'");
       $row=$query->fetch_array();
-
       //User profile picture
-    $userPicture = !empty($row['picture'])?$row['picture']:'no-image.png';
-    $userPictureURL = '../uploads/images/'.$userPicture;
+      $userPicture = !empty($row['user_image'])?$row['user_image']:'no-image.png';
+      $user_image_url = '../uploads/'.$userPicture;
  ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Hmls | Dashboard</title>
+  <title>Bus Booking</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -28,7 +27,7 @@
     <!-- DataTables -->
   <link rel="stylesheet" href="../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
-  <link rel="shortcut icon" href="../dist/img/hospital.png" type="image/x-icon">
+  <link rel="shortcut icon" href="../dist/img/bus1.png" type="image/x-icon">
   <!-- bootstrap datepicker -->
   <link rel="stylesheet" href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
   <!-- Font Awesome -->
@@ -61,9 +60,9 @@
     <!-- Logo -->
     <a href="home.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b><img src="../dist/img/hospital.png" alt="Smiley face" height="42" width="42"></b></span>
+      <span class="logo-mini"><b><img src="../dist/img/bus.png" alt="Smiley face" height="42" width="42"></b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><img src="../dist/img/hospital.png" alt="Smiley face" height="42" width="42"> LMS</b></span>
+      <span class="logo-lg"><img src="../dist/img/bus1.png" alt="Smiley face" height="42" width="42"> BBS</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -81,17 +80,17 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?php echo $userPictureURL; ?>" class="user-image" alt="User Image">
-              <span class="hidden-xs"><?php echo $row['employee_fname']."  ".$row['employee_lname']; ?></span>
+              <img src="<?php echo $user_image_url; ?>" class="user-image" alt="User Image">
+              <span class="hidden-xs"><?php echo $row['user_fname']."  ".$row['user_lname']; ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?php echo $userPictureURL; ?>" class="img-circle" alt="User Image">
+                <img src="<?php echo $user_image_url; ?>" class="img-circle" alt="User Image">
 
                 <p>
-                  <?php echo $row['employee_fname']."  ".$row['employee_lname']; ?> - <?php echo $row['employee_title'];?>
-                  <small> <?php echo $row['employee_date_employed']; ?></small>
+                  <?php echo $row['user_fname']."  ".$row['user_lname']; ?> - <?php echo $row['user_role'];?>
+                  <small> <?php echo $row['user_since']; ?></small>
                 </p>
               </li>
 
@@ -120,10 +119,10 @@
 
        <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?php echo $userPictureURL; ?>" class="img-circle" alt="User Image">
+          <img src="<?php echo $user_image_url; ?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?php echo $row['employee_fname']."  ".$row['employee_lname']; ?></p>
+          <p><?php echo $row['user_fname']."  ".$row['user_lname']; ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -139,8 +138,8 @@
         </li>
 
          <li>
-          <a href="apply.php">
-            <i class="fa fa-file-o"></i> <span>Leave</span>
+          <a href="booking.php">
+            <i class="fa fa-file-o"></i> <span>My Bookings</span>
             <span class="pull-right-container"> </span>
           </a>
         </li>
@@ -148,7 +147,7 @@
 
          <li>
           <a href="profile.php">
-            <i class="fa fa-user"></i> <span>Myprofile</span>
+            <i class="fa fa-user"></i> <span>My Profile</span>
             <span class="pull-right-container"> </span>
           </a>
         </li>

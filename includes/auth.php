@@ -1,5 +1,5 @@
 <?php
- //session_start();
+ session_start();
  $eid = $_SESSION['username'];
  $user_status  = $_SESSION['status'];
  $user_category = $_SESSION['categorySession'];
