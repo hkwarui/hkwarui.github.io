@@ -1,5 +1,4 @@
  <?php
-
      include("Dbconnect.php");
      include("auth.php");
 
@@ -138,7 +137,7 @@
         </li>
 
          <li>
-          <a href="booking.php">
+          <a href="bookings.php">
             <i class="fa fa-file-o"></i> <span>My Bookings</span>
             <span class="pull-right-container"> </span>
           </a>
