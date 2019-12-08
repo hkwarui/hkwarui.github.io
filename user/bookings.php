@@ -36,7 +36,7 @@ include("../includes/header.php");
               <i class="fa fa-fw fa-times-circle"></i>
               <strong> Note !</strong> Data saving failed.
              </div>
-             <div class="alert icon-alert with-arrow alert-primary form-alter" role="alert" style="display:none;">
+             <div class="alert icon-alert with-arrow alert-warning form-alter" role="alert" style="display:none;">
               <i class="fa fa-fw fa-check-circle text-justify"></i>
               <strong> Price :  KES <span class="price"> </span>  /=</strong>
              </div>
@@ -234,7 +234,7 @@ include("../includes/footer.php");
            $(".price").append(price);
            $(".alert-danger").hide();
            $(".alert-success").hide();
-           $(".alert-primary").fadeIn(800);
+           $(".alert-warning").fadeIn(800);
        }
       })
      });
