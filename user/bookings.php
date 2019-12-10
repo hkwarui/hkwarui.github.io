@@ -2,7 +2,7 @@
 include("../includes/header.php");
 ?>
 <div class="content-wrapper">
-    <section class="content-header" style="background-color: #fbfbfb; padding: 5px; border-bottom:solid:2px;">
+    <section class="content-header" style="background-color: #fbfbfb; padding: 2px; border-bottom:solid:2px;">
       <h4>
         <b>Customer</b>
         <small>self service</small>
@@ -11,8 +11,8 @@ include("../includes/header.php");
 
     <section class="content">
 
-        <p><btn class ="btn btn-primary btn-sm" data-toggle="modal" data-target="#add_booking"><i class="fa fa-plus"> New</i></btn>
-      <a href="#" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a> </p>
+        <p><btn class ="btn btn-info btn-sm" data-toggle="modal" data-target="#add_booking"><i class="fa fa-plus"> New</i></btn>
+      <a href="#" target="_blank" class="btn btn-default btn-sm"><i class="fa fa-print"></i> Print</a> </p>
 
                   <!-- Modal -->
         <div class="modal fade" id="add_booking" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -36,16 +36,16 @@ include("../includes/header.php");
               <i class="fa fa-fw fa-times-circle"></i>
               <strong> Note !</strong> Data saving failed.
              </div>
-             <div class="alert icon-alert with-arrow alert-warning form-alter" role="alert" style="display:none;">
-              <i class="fa fa-fw fa-check-circle text-justify"></i>
-              <strong> Price :  KES <span class="price"> </span>  /=</strong>
+             <div class="alert icon-alert with-arrow alert-light form-alter" role="alert" style="display:none;">
+              
              </div>
 
-            <div class="form-group required">
+            <div class="form-group row">
+            <div class="form-group col-xs-3 required">
                 <label for="Date">Date</label>
-                <input type="date" id="date" name="date" class="form-control" required="required" />
+                <input type="text" id="date" name="date" class="form-control" placeholder="select date" required="required" />
             </div>
-            <div class="form-group required">
+            <div class="form-group col-xs-3 required">
                 <label for="route">Route</label>
                 <select class="form-control selectpicker show-tick" id="route" name="route" data-live-search="true"  required="required"> <option value="">-- select --</option>
                   <?php
@@ -56,18 +56,22 @@ include("../includes/header.php");
                  <?php } ?>
                 </select>
             </div>
-            <div class="form-group required">
+            <div class="form-group col-xs-3 required">
                   <label for="Time">Time</label>
                    <select class="form-control selectpicker show-tick" id="bus_time" name="bus_time" data-live-search="true"  required="required">
                  <option value = ""> --Select-- </option>
                  </select>
+            </div>
+             <div  class="form-group col-xs-3 required">
+                <input type="hidden" id="charges" name="charges" class="form-control"  />
+            </div>
             </div>
             
         </div> 
 
 <div class="clearfix"></div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary btn-form-action btn-submit">Submit</button>
+  <button type="button" class="btn btn-info btn-form-action btn-submit">Submit</button>
   <button type="button" class="btn btn-danger btn-form-action btn-reset">Clear</button>
 </div>
 </form>
@@ -88,7 +92,7 @@ include("../includes/header.php");
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger btn-confirm-delete "> Confirm </button>
-        <button type="button" class="btn btn-primary btn-confirm-close" data-dismiss="modal"> Close </button>
+        <button type="button" class="btn btn-info btn-confirm-close" data-dismiss="modal"> Close </button>
       </div>
    </div>
   </div>
@@ -115,7 +119,7 @@ include("../includes/header.php");
         <!-- bookings table -->
 
     <div class="box box primary" style="padding:1%;">
-    <table id="example2"  class="table table-bordered table-striped">
+    <table id="example2"  class="table table-bordered table-striped nowrap" style="width:100%">
       <thead>
         <tr>
           <th>S.No</th>
@@ -131,24 +135,24 @@ include("../includes/header.php");
       <tbody>
        <?php
         $sno = 1;
-        $query = "SELECT users_bookings.bus_reg,users_bookings.book_date,users_bookings.bus_time,users_bookings.bus_route,users_bookings.bus_driver,users_bookings.payments,users_bookings.customer  FROM users_bookings  ORDER BY users_bookings.bus_time";
+        $query = "SELECT * FROM users_bookings ORDER BY bus_time";
         $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
         while($row = mysqli_fetch_array($result)){
         ?>
         <tr>
           <td><?php echo $sno++; ?></td>
           <td><?php echo $row['bus_reg']; ?></td>
-          <td><?php echo $row['book_date']; ?></td>
+          <td><?php echo $row['book_date'];?></td>
           <td><?php echo $row['bus_time']; ?></td>
-             <td><?php echo $row['bus_time']; ?></td>
+          <td><?php echo $row['bus_route']; ?></td>
           <td><?php echo $row['bus_driver']; ?></td>
           <td><?php echo $row['payments']; ?></td>
           <td text-align="center">
           <div class="form-group">
-          <button type="button" class="btn btn-xs btn-primary btn-edit" id="<?php echo $row['dept_id']; ?>" title="Edit details"  data-target="#confirmModal" >
+          <button type="button" class="btn btn-xs btn-info btn-edit" id="<?php echo $row['id']; ?>" title="Edit details"  data-target="#confirmModal" >
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </button>
-          <button type="button" class="btn btn-xs btn-danger btn-delete" id="<?php echo $row['dept_id']; ?>" title="Delete details" data-toggle="modal" data-target="#confirmModal" >
+          <button type="button" class="btn btn-xs btn-danger btn-delete" id="<?php echo $row['id']; ?>" title="Delete details" data-toggle="modal" data-target="#confirmModal" >
             <i class="fa fa-trash-o" aria-hidden="true"></i>
           </button>
           </div>
@@ -156,18 +160,6 @@ include("../includes/header.php");
         </tr>
            <?php } ?>
       </tbody>
-      <tfoot>
-        <tr>
-          <th>S.No</th>
-          <th>Bus Reg.</th>
-          <th>Date</th>
-          <th>time</th>
-          <th>Route</th>
-          <th>Driver</th>
-          <th>Payment</th>
-          <th>Action</th>
-        </tr>
-     </tfoot>
     </table>
  </div>
 </section>
@@ -176,34 +168,24 @@ include("../includes/header.php");
 <?php
 include("../includes/footer.php");
 ?>
-
  <script>
   $(document).ready(function()  {
     $('#example2').DataTable({
-
-        buttons: [
-            'copy',
-            'excel',
-            'csv',
-            'pdf',
-            'print'
-        ]
-    })
-  }) ;
-  $(document).ready(function(){
+    });
+   $('#date').datepicker({
+       minDate: new Date()
+  });
   $('#route').change(function(){
      var routeId = $(this).val();
      $('#bus_time').find('option').not(':first').remove();
      $.ajax({
        url: 'ajax_booking.php',
        type: 'post',
-       data: {request: 1, routeId : routeId},
+       data: {request: 1, routeId : routeId },
        dataType: 'json',
        success: function(response){
-
          var len = response.length;
          var price = response.price;
-         
          for( var i = 0; i<len; i++){
            var id = response[i]['id'];
            var bus_time = response[i]['bus_time'];
@@ -214,38 +196,36 @@ include("../includes/footer.php");
      });
 
      $('#bus_time').change(function(e){
-       e.preventDefault();
-       var busTime = $(this).val();
-      
-     
-     $.ajax({
-       url: 'ajax_booking.php',
-       type: 'post',
-       data: {request: 2, busTime : busTime},
-       dataType: 'json',
-       success: function(response){
-
-         var len = response.length;
+         e.preventDefault();
+         var busTime = $(this).val();
+        $.ajax({
+        url: 'ajax_booking.php',
+        type: 'post',
+        data: {request: 2, busTime : busTime},
+        dataType: 'json',
+        success: function(response){
+           var len = response.length;
            var price = response[0]['price'];
            var bus_reg = response[0]['bus_reg'];
-            console.log(busTime)
-          console.log(price);
-          $(".price").val("");
-           $(".price").append(price);
+           $("#charges").val(price);
            $(".alert-danger").hide();
            $(".alert-success").hide();
-           $(".alert-warning").fadeIn(800);
+           $(".alert-light").html("<h3 class='text-center'><strong> Charges:  KES "+  price + " /= </strong></h3>");
+           $(".alert-light").show();
        }
-      })
+      })      
      });
-
-  });
-
-  $(document).ready(function(e){
+  
     $("#hl_form").validate({
       // Specify the validation rules
       rules: {
         route: {
+          required: true
+        },
+        date: {
+          required: true
+        },
+        bus_time: {
           required: true
         }
 
@@ -253,14 +233,15 @@ include("../includes/footer.php");
       // Specify the validation error messages
       messages: {
         route: "Please select route",
+        date: "Please select date",
+        bus_time: "Please select time to see charges"
       },
       submitHandler: function(form) {
         form.submit();
       }
     });
 
-  
-    $(document).on('click', '.btn-submit', function(ev){
+      $(document).on('click', '.btn-submit', function(ev){
       ev.preventDefault();
       var btn_button = $(this);
       if($("#hl_form").valid() == true){
@@ -270,14 +251,12 @@ include("../includes/footer.php");
         $.post('save_booking.php', data, function(data, status){
           console.log("Data: " + data + "\nStatus: " + status);
           if( data == "1"){
-            //alert("Data: " + data + "\nStatus: " + status);
             $(".alert-danger").hide();
             $(".alert-success").fadeIn(800);
             btn_button.html('<i class="fa fa fa-check-circle"></i> Done');
             setTimeout(function(){  location.reload(); }, 2000);
           }
           else{
-            //alert("Data: " + data + "\nStatus: " + status);
             $(".alert-success").hide();
             $(".alert-danger").fadeIn(800);
             btn_button.html('Submit').attr("disabled",false);
@@ -290,7 +269,10 @@ include("../includes/footer.php");
       ev.preventDefault();
       $("#form_name").val("add_user");
       $("#edit_id").val('');
-      $("#route").val('').focus();
+      $("#route").val('');
+      $('#bus_time').val('');
+      $("#date").val('').focus();
+      $(".alert-light").hide();
       $(".dup-chek-details").html('');
       $("label.error").hide('');
     });
@@ -303,20 +285,22 @@ include("../includes/footer.php");
       $('.btn-reset').trigger('click');
       $.ajax({
         cache: false,
-        url: 'get_dept_ajax_details.php', // url where to submit the request
+        url: 'get_ajax_bookings.php', // url where to submit the request
         type : "GET", // type of action POST || GET
         dataType : 'json', // data type
-        data : { cmd: "get_user_details", tbl_id: tbl_id }, // post data || get data
+        data : { cmd: "edit_booking.", tbl_id: tbl_id }, // post data || get data
         success : function(result) {
         btn_button.html(' <i class="fa fa fa-pencil-square-o"></i> ');
         console.log(result);
         $("#add_booking").modal("show");
         $("#form_name").val("edit_user");
-        $("#edit_id").val(result['dept_id']);
-        $("#dept_name").val(result['dept_name']).focus();
-        $("#dept_summary").val(result['dept_summary']);
-        $("#dept_hod").val(result['dept_hod']);
-        $("#dept_ext").val(result['dept_ext']).change();
+        $("#edit_id").val(result['id']);
+        $("#date").val(result['book_date']);
+        $("#bus_time").val(result['bus_time']);
+        $("#route").val(result['bus_route']).change();
+        $("#charges").val(result['payments'])
+        $(".alert-light").html("<h4 class='text-center'><strong> Charges:  KES "+ result['payments']  + " /= </strong></h4>");
+        $(".alert-light").show();
         },
         error: function(xhr, resp, text) {
         console.log(xhr, resp, text);
@@ -330,7 +314,7 @@ include("../includes/footer.php");
       var tbl_id = $('.btn-confirm-delete').attr("id");
       $('#confirmModal').modal('hide');
 
-      $.post('save_dept_details.php', { form_name: "del_user", tbl_id: tbl_id }, function(data,status){
+      $.post('save_booking.php', { form_name: "del_user", tbl_id: tbl_id }, function(data,status){
         console.log(data);
         if(data == "1"){
           btn_button.html('<i class="fa fa fa-check-circle "></i> Done');
