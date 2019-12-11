@@ -8,8 +8,8 @@ $form_name = $_POST['form_name'];
 if($form_name == 'add_user'){
 
     $route = mysqli_real_escape_string($DBcon, $_POST['route']);
-    $date1 = mysqli_real_escape_string($DBcon, $_POST['date']);
-    $date = date("d/m/Y", strtotime($date1));
+    $date1 = mysqli_real_escape_string($DBcon, $_POST['datepicker']);
+    $date = date("Y-m-d", strtotime($date1));
     $bus_time = mysqli_real_escape_string($DBcon, $_POST['bus_time']);
     $time = date('h:i', strtotime($bus_time));
     $payment = mysqli_real_escape_string($DBcon, $_POST['charges']);
@@ -30,8 +30,9 @@ if($form_name == 'add_user'){
 }
 
 if($form_name == "edit_user"){
-    $date1 = mysqli_real_escape_string($DBcon, $_POST['date']);
-    $date = date("d-m-Y", strtotime($date1));
+    $date1 = mysqli_real_escape_string($DBcon, $_POST['datepicker']);
+    $date = date("Y-m-d", strtotime($date1));
+    //echo $date;
     $route = mysqli_real_escape_string($DBcon, $_POST['route']);
     $bus_time = mysqli_real_escape_string($DBcon, $_POST['bus_time']);
     $time = date("H:i", strtotime($bus_time));

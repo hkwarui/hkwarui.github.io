@@ -10,8 +10,7 @@ include("../includes/header.php");
     </section>
 
     <section class="content">
-
-        <p><btn class ="btn btn-info btn-sm" data-toggle="modal" data-target="#add_booking"><i class="fa fa-plus"> New</i></btn>
+      <p><btn class ="btn btn-info btn-sm" data-toggle="modal" data-target="#add_booking"><i class="fa fa-plus"> New</i></btn>
       <a href="#" target="_blank" class="btn btn-default btn-sm"><i class="fa fa-print"></i> Print</a> </p>
 
                   <!-- Modal -->
@@ -42,14 +41,14 @@ include("../includes/header.php");
 
             <div class="form-group row">
             <div class="form-group col-xs-3 required">
-                <label for="Date">Date</label>
-                <input type="text" id="date" name="date" class="form-control" placeholder="select date" required="required" />
+                <label for="date">Date</label>
+                <input type="text" id="datepicker" name="datepicker" class="form-control" placeholder="select date" required="required" />
             </div>
             <div class="form-group col-xs-3 required">
                 <label for="route">Route</label>
                 <select class="form-control selectpicker show-tick" id="route" name="route" data-live-search="true"  required="required"> <option value="">-- select --</option>
                   <?php
-                    $query = "SELECT * FROM routes ORDER BY bus_time";
+                    $query = "SELECT * FROM routes ORDER BY id";
                      $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
                      while($row = mysqli_fetch_array($result)){ ?>
                     <option value="<?php echo $row['route'] ; ?>"><?php echo $row['route']; ?></option>
@@ -57,7 +56,7 @@ include("../includes/header.php");
                 </select>
             </div>
             <div class="form-group col-xs-3 required">
-                  <label for="Time">Time</label>
+                  <label for="Bus Time">Time</label>
                    <select class="form-control selectpicker show-tick" id="bus_time" name="bus_time" data-live-search="true"  required="required">
                  <option value = ""> --Select-- </option>
                  </select>
@@ -72,7 +71,7 @@ include("../includes/header.php");
 <div class="clearfix"></div>
 <div class="modal-footer">
   <button type="button" class="btn btn-info btn-form-action btn-submit">Submit</button>
-  <button type="button" class="btn btn-danger btn-form-action btn-reset">Clear</button>
+  <button type="button" class="btn btn-danger  btn-form-action btn-reset">Clear</button>
 </div>
 </form>
 
@@ -117,7 +116,6 @@ include("../includes/header.php");
   </div>
 
         <!-- bookings table -->
-
     <div class="box box primary" style="padding:1%;">
     <table id="example2"  class="table table-bordered table-striped nowrap" style="width:100%">
       <thead>
@@ -145,7 +143,7 @@ include("../includes/header.php");
           <td><?php echo $row['book_date'];?></td>
           <td><?php echo $row['bus_time']; ?></td>
           <td><?php echo $row['bus_route']; ?></td>
-          <td><?php echo $row['bus_driver']; ?></td>
+          <td><?php echo $row['driver_id']; ?></td>
           <td><?php echo $row['payments']; ?></td>
           <td text-align="center">
           <div class="form-group">
@@ -172,7 +170,7 @@ include("../includes/footer.php");
   $(document).ready(function()  {
     $('#example2').DataTable({
     });
-   $('#date').datepicker({
+   $('#datepicker').datepicker({
        minDate: new Date()
   });
   $('#route').change(function(){
@@ -222,7 +220,7 @@ include("../includes/footer.php");
         route: {
           required: true
         },
-        date: {
+        datepicker: {
           required: true
         },
         bus_time: {
@@ -233,8 +231,8 @@ include("../includes/footer.php");
       // Specify the validation error messages
       messages: {
         route: "Please select route",
-        date: "Please select date",
-        bus_time: "Please select time to see charges"
+        datepicker: "Please select date",
+        bus_time: "Please select time"
       },
       submitHandler: function(form) {
         form.submit();
@@ -271,7 +269,7 @@ include("../includes/footer.php");
       $("#edit_id").val('');
       $("#route").val('');
       $('#bus_time').val('');
-      $("#date").val('').focus();
+      $("#datepicker").val('').focus();
       $(".alert-light").hide();
       $(".dup-chek-details").html('');
       $("label.error").hide('');
@@ -295,7 +293,7 @@ include("../includes/footer.php");
         $("#add_booking").modal("show");
         $("#form_name").val("edit_user");
         $("#edit_id").val(result['id']);
-        $("#date").val(result['book_date']);
+        $("#datepicker").val(result['book_date']);
         $("#bus_time").val(result['bus_time']);
         $("#route").val(result['bus_route']).change();
         $("#charges").val(result['payments'])

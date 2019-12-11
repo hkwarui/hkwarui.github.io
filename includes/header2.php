@@ -146,8 +146,8 @@
         </li>
 
          <li>
-          <a href="tickets.php">
-            <i class="fa fa-file-o"></i> <span>Tickets</span>
+          <a href="routes.php">
+            <i class="fa fa-file-o"></i> <span>Routes</span>
             <span class="pull-right-container"> </span>
           </a>
         </li>
@@ -160,8 +160,8 @@
           </a>
         </li>
         <li>
-          <a href="passangers.php">
-            <i class="fa fa-users"></i> <span>Passagers</span>
+          <a href="customers.php">
+            <i class="fa fa-users"></i> <span>customers</span>
             <span class="pull-right-container"> </span>
           </a>
         </li>
