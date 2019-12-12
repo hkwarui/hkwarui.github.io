@@ -10,12 +10,10 @@
       </h4>
 
     </section>
-
-    <section class="content">
     
+    <section class="content">
      <p><btn class ="btn btn-info btn-sm" data-toggle="modal" data-target="#add_booking"><i class="fa fa-plus"> New</i></btn>
       <a href="#" target="_blank" class="btn btn-default btn-sm"><i class="fa fa-print"></i> Print</a> </p>
-
     <div class="box box primary" style="padding:1%;">
     <table id="example2"  class="table table-bordered table-striped nowrap" style="width:100%">
       <thead>
