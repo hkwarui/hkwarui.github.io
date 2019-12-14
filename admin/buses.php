@@ -10,12 +10,11 @@ include("../includes/header2.php");
     </section>
     <section class="content">
         <p>
-            <btn class="btn btn-info btn-sm" data-toggle="modal" data-target="#add_driver">
-                <i class="fa fa-plus">New</i></btn>
+            <btn class="btn btn-info btn-sm" data-toggle="modal" data-target="#add_booking"><i class="fa fa-plus">
+                    New</i></btn>
             <a href="#" target="_blank" class="btn btn-default btn-sm"><i class="fa fa-print"></i> Print</a>
         </p>
-
-        <div class="modal fade" id="add_driver" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" id="add_booking" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
 
@@ -26,7 +25,7 @@ include("../includes/header2.php");
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel"><strong>Add Driver</strong></h4>
+                            <h4 class="modal-title" id="myModalLabel"><strong>New Bus</strong></h4>
                         </div>
                         <div class="modal-body">
                             <div class="alert icon-alert with-arrow alert-success form-alter" role="alert"
@@ -43,32 +42,50 @@ include("../includes/header2.php");
                                 style="display:none;">
 
                             </div>
-
                             <div class="form-group row">
-                                <div class="form-group col-xs-6 required">
-                                    <label for="First Name.">First Name.</label>
-                                    <input type="text" id="fname" name="fname" class="form-control" />
+
+                                <div class="form-group col-xs-3 required">
+                                    <label for="Bus Reg.">Bus reg.</label>
+                                    <input type="text" id="bus_reg" name="bus_reg" placeholder="KCF 457S"
+                                        class="form-control" required />
                                 </div>
-                                <div class="form-group col-xs-6 ">
-                                    <label for="last name">Last Name</label>
-                                    <input type="text" id="lname" name="lname" class="form-control" />
+                                <div class="form-group col-xs-3 ">
+                                    <label for="route">Route</label>
+                                    <select class="form-control selectpicker show-tick" id="route" name="route"
+                                        data-live-search="true" required="required">
+                                        <option value="">-- select --</option>
+                                        <?php
+                    $query = "SELECT * FROM routes ORDER BY id";
+                     $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
+                     while($row = mysqli_fetch_array($result)){ ?>
+                                        <option value="<?php echo $row['route_id'] ; ?>"><?php echo $row['route']; ?>
+                                        </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-xs-3 ">
+                                    <label for="Driver">Driver Name</label>
+                                    <select class="form-control selectpicker show-tick" id="driver" name="driver"
+                                        data-live-search="true" required="required">
+                                        <option value="">-- select --</option>
+                                        <?php
+                    $query = "SELECT * FROM drivers ORDER BY driver_id";
+                     $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
+                     while($row = mysqli_fetch_array($result)){ ?>
+                                        <option value="<?php echo $row['driver_id'];?>">
+                                            <?php echo  $row['fname']." ".$row['lname'] ;?>
+                                        </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-xs-3">
+                                    <label for="Bus Time">Time</label>
+                                    <input type="time" id="bus_time" name="bus_time" class="form-control" />
                                 </div>
 
                             </div>
 
-                            <div class="form-group row">
-                                <div class="form-group col-xs-6 ">
-                                    <label for="Email">Email</label>
-                                    <input type="email" id="email" name="email" class="form-control" />
-                                </div>
-                                <div class="form-group col-xs-6">
-                                    <label for="Contact">Contact</label>
-                                    <input type="text" id="contact" name="contact" class="form-control" />
-                                </div>
-                                <div class="form-group col-xs-6">
-                                    <input type="hidden" id="driver_id" name="driver_id" class="form-control" />
-                                </div>
-                            </div>
                         </div>
 
                         <div class="clearfix"></div>
@@ -116,30 +133,31 @@ include("../includes/header2.php");
                 </div>
             </div>
         </div>
-
         <div class="box box primary" style="padding:1%;">
             <table id="example2" class="table table-bordered table-striped nowrap" style="width:100%">
                 <thead>
                     <tr>
                         <th>S.No</th>
-                        <th>Names</th>
-                        <th>Email</th>
-                        <th>Contact</th>
+                        <th>Bus Reg.</th>
+                        <th>Route</th>
+                        <th>Bus Time</th>
+                        <th>Driver</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
         $sno = 1;
-        $query = "SELECT * FROM drivers ORDER BY fname";
+        $query = "SELECT rt.route, rt.charges, dr.fname ,dr.lname, bs.* FROM buses bs INNER JOIN routes rt ON bs.route_id = rt.route_id LEFT JOIN drivers dr ON bs.driver_id = dr.driver_id  ORDER BY bs.bus_reg";
         $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
         while($row = mysqli_fetch_array($result)){
         ?>
                     <tr>
                         <td><?php echo $sno++; ?></td>
-                        <td><?php echo $row['fname'] ." ".$row['lname']; ?></td>
-                        <td><?php echo $row['driver_email'];?></td>
-                        <td><?php echo $row['driver_contact']; ?></td>
+                        <td><?php echo $row['bus_reg'] ; ?></td>
+                        <td><?php echo $row['route'];?></td>
+                        <td><?php echo $row['bus_time'];?></td>
+                        <td><?php echo $row['fname']." ".$row['lname']; ?></td>
                         <td text-align="center">
                             <div class="form-group">
                                 <button type="button" class="btn btn-xs btn-info btn-edit"
@@ -162,31 +180,18 @@ include("../includes/header2.php");
 </div>
 <?php  include("../includes/footer.php"); ?>
 
-
 <script>
 $(document).ready(function() {
     $('#example2').DataTable({});
 
     $("#hl_form").validate({
         rules: {
-            fname: {
-                required: true
-            },
-            lname: {
-                required: true
-            },
-            email: {
-                required: true
-            },
-            contact: {
+            bus_reg: {
                 required: true
             }
         },
         messages: {
-            fname: "Please enter First Name .",
-            lname: "Please enter last Name ",
-            email: "Please enter a valid Email",
-            contact: "Please enter Contact"
+            bus_reg: "Please Enter registration no.",
         },
         submitHandler: function(form) {
             form.submit();
@@ -200,7 +205,7 @@ $(document).ready(function() {
             var data = $("#hl_form").serialize();
             btn_button.html(' <i class="fa fa fa-spinner fa-spin"></i> Processing...');
             btn_button.attr("disabled", true);
-            $.post('save_driver.php', data, function(data, status) {
+            $.post('save_new_bus.php', data, function(data, status) {
                 console.log("Data: " + data + "\nStatus: " + status);
                 if (data == "1") {
                     $(".alert-danger").hide();
@@ -221,10 +226,10 @@ $(document).ready(function() {
         ev.preventDefault();
         $("#form_name").val("add_bus");
         $("#edit_id").val('');
-        $("#fname").val('').focus();
-        $("#lname").val('');
-        $('#email').val('');
-        $("#contact").val('');
+        $("#route").val('');
+        $("#bus_reg").val('').focus();
+        $('#bus_time').val('');
+        $("#driver").val('');
         $(".alert-light").hide();
         $(".dup - chek - details ").html('');
         $("label.error").hide('');
@@ -237,7 +242,7 @@ $(document).ready(function() {
         $('.btn-reset').trigger('click');
         $.ajax({
             cache: false,
-            url: 'get_driver_info.php', // url where to submit the request
+            url: 'get_bus_info.php', // url where to submit the request
             type: "GET", // type of action POST || GET
             dataType: 'json', // data type
             data: {
@@ -247,14 +252,13 @@ $(document).ready(function() {
             success: function(result) {
                 btn_button.html(' <i class="fa fa fa-pencil-square-o"></i> ');
                 console.log(result);
-                $("#add_driver").modal("show");
+                $("#add_booking").modal("show");
                 $("#form_name").val("edit_bus");
                 $("#edit_id").val(result['id']);
-                $("#fname").val(result['fname']).focus();
-                $("#lname").val(result['lname']);
-                $("#email").val(result['driver_email']);
-                $("driver_id").val(result['driver_id']);
-                $("#contact").val(result['driver_contact']).change();
+                $("#bus_reg").val(result['bus_reg']);
+                $("#driver").val(result['driver_id']);
+                $("#bus_time").val(result['bus_time']);
+                $("#route").val(result['route_id']).change();
             },
             error: function(xhr, resp, text) {
                 console.log(xhr, resp, text);
@@ -267,7 +271,7 @@ $(document).ready(function() {
         var tbl_id = $('.btn-confirm-delete').attr("id");
         $('#confirmModal').modal('hide');
 
-        $.post('save_driver.php', {
+        $.post('save_new_bus.php', {
             form_name: "del_user",
             tbl_id: tbl_id
         }, function(data, status) {
@@ -299,7 +303,6 @@ $(document).ready(function() {
         ev.preventDefault();
         $(".btn-confirm-delete").attr("id", "0");
     });
-
 
 })
 </script>

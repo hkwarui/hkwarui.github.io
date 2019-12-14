@@ -5,7 +5,6 @@
       $eid = $_SESSION['username'];
       $query = $DBcon->query("SELECT * FROM users_details WHERE user_code ='$eid'");
       $row=$query->fetch_array();
-      //User profile picture
       $userPicture = !empty($row['user_image'])?$row['user_image']:'no-image.png';
       $user_image_url = '../uploads/'.$userPicture;
  ?>
@@ -57,18 +56,13 @@
      <div class="wrapper">
 
          <header class="main-header">
-             <!-- Logo -->
              <a href="home.php" class="logo">
-                 <!-- mini logo for sidebar mini 50x50 pixels -->
                  <span class="logo-mini"><b><img src="../dist/img/bus.png" alt="Smiley face" height="42"
                              width="42"></b></span>
-                 <!-- logo for regular state and mobile devices -->
                  <span class="logo-lg"><img src="../dist/img/bus1.png" alt="Smiley face" height="42" width="42">
                      BBS</b></span>
              </a>
-             <!-- Header Navbar: style can be found in header.less -->
              <nav class="navbar navbar-static-top">
-                 <!-- Sidebar toggle button-->
                  <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                      <span class="sr-only">Toggle navigation</span>
                      <span class="icon-bar"></span>
@@ -79,7 +73,6 @@
                  <div class="navbar-custom-menu">
                      <ul class="nav navbar-nav">
 
-                         <!-- User Account: style can be found in dropdown.less -->
                          <li class="dropdown user user-menu">
                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                  <img src="<?php echo $user_image_url; ?>" class="user-image" alt="User Image">
@@ -87,7 +80,6 @@
                                      class="hidden-xs"><?php echo $row['user_fname']."  ".$row['user_lname']; ?></span>
                              </a>
                              <ul class="dropdown-menu">
-                                 <!-- User image -->
                                  <li class="user-header">
                                      <img src="<?php echo $user_image_url; ?>" class="img-circle" alt="User Image">
 
@@ -98,7 +90,6 @@
                                      </p>
                                  </li>
 
-                                 <!-- Menu Footer-->
                                  <li class="user-footer">
                                      <div class="pull-left">
                                          <a href="profile.php" class="btn btn-default btn-flat">Profile</a>
@@ -114,13 +105,8 @@
              </nav>
          </header>
 
-         <!-- =============================================== -->
-
-         <!-- Left side column. contains the sidebar -->
          <aside class="main-sidebar">
-             <!-- sidebar: style can be found in sidebar.less -->
              <section class="sidebar">
-
                  <div class="user-panel">
                      <div class="pull-left image">
                          <img src="<?php echo $user_image_url; ?>" class="img-circle" alt="User Image">
@@ -131,7 +117,6 @@
                      </div>
                  </div>
 
-                 <!-- sidebar menu: : style can be found in sidebar.less -->
                  <ul class="sidebar-menu" data-widget="tree">
                      <li class="header active">MAIN NAVIGATION</li>
                      <li>
@@ -148,7 +133,6 @@
                          </a>
                      </li>
 
-
                      <li>
                          <a href="profile">
                              <i class="fa fa-user"></i> <span>My Profile</span>
@@ -156,8 +140,4 @@
                          </a>
                      </li>
              </section>
-             <!-- /.sidebar -->
          </aside>
-
-
-         <!-- =============================================== -->
