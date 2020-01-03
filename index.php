@@ -21,7 +21,7 @@ if (isset($_POST['btn-login'])) {
  $row = $result->fetch_array();
 
  $count = $result->num_rows; // if username/password are correct returns must be 1 row
-   echo $row['log_username'];
+   //echo $row['log_username'];
  if ($count==1) {
     if($row['log_status'] == 1)
       {
