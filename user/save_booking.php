@@ -13,14 +13,15 @@ if($form_name == 'add_user'){
     $bus_time = mysqli_real_escape_string($DBcon, $_POST['bus_time']);
     $time = date('h:i', strtotime($bus_time));
     $payment = mysqli_real_escape_string($DBcon, $_POST['charges']);
-    $bus_reg = "KCF 487L";
-    //$date = date("Y/m/d");
-    //$time = date("h:i");
-    $driver = "Kimani Thuraku";
-    //$payment = "Pending";
+    $bus_reg = mysqli_real_escape_string($DBcon, $_POST['bus_reg']);
     $customer = $eid;
 
-    $query = "INSERT INTO users_bookings (bus_reg,bus_route, book_date, bus_time, bus_driver, payments) VALUES ('$bus_reg','$route', '$date', '$bus_time','$driver','$payment')";
+    $query1 = "SELECT driver_id FROM buses WHERE id = $bus_reg";
+    $result1 = mysqli_query($DBcon,$query1) or die(mysqli_error($DBcon));
+    $row = mysqli_fetch_assoc($result1);
+    $driver =  $row['driver_id'];
+
+    $query = "INSERT INTO users_bookings (bus_reg,bus_route, book_date, bus_time, driver_id, payments,customer) VALUES ('$bus_reg','$route', '$date', '$time','$driver','$payment','$customer')";
 
     $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
     if($result)

@@ -2,7 +2,7 @@
 include("../includes/header.php");
 ?>
 <div class="content-wrapper">
-    <section class="content-header" style="background-color: #fbfbfb; padding: 2px; border-bottom:solid:2px;">
+    <section class="content-header" style="background-color: #fbfbfb; padding: 2px; border-bottom:solid 2px;">
         <h4>
             <b>Customer</b>
             <small>self service</small>
@@ -43,21 +43,6 @@ include("../includes/header.php");
                             </div>
                             <div class="alert icon-alert with-arrow alert-light form-alter" role="alert"
                                 style="display:none;">
-
-                                <div class="form-group col-xs-3 required">
-                                    <label for="route">Route</label>
-                                    <select class="form-control selectpicker show-tick" id="route" name="route"
-                                        data-live-search="true" required="required">
-                                        <option value="">-- select --</option>
-                                        <?php
-                    $query = "SELECT * FROM routes ORDER BY id";
-                     $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
-                     while($row = mysqli_fetch_array($result)){ ?>
-                                        <option value="<?php echo $row['route'] ; ?>"><?php echo $row['route']; ?>
-                                        </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
                             </div>
 
                             <div class="form-group row">
@@ -76,7 +61,7 @@ include("../includes/header.php");
                     $query = "SELECT * FROM routes ORDER BY id";
                      $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
                      while($row = mysqli_fetch_array($result)){ ?>
-                                        <option value="<?php echo $row['route'] ; ?>"><?php echo $row['route']; ?>
+                                        <option value="<?php echo $row['route_id'] ; ?>"><?php echo $row['route']; ?>
                                         </option>
                                         <?php } ?>
                                     </select>
@@ -90,6 +75,9 @@ include("../includes/header.php");
                                 </div>
                                 <div class="form-group col-xs-3 required">
                                     <input type="hidden" id="charges" name="charges" class="form-control" />
+                                </div>
+                                <div class="form-group col-xs-3 required">
+                                    <input type="hidden" id="bus_reg" name="bus_reg" class="form-control" />
                                 </div>
                             </div>
 
@@ -155,14 +143,16 @@ include("../includes/header.php");
                         <th>Time</th>
                         <th>Route</th>
                         <th>Driver</th>
+                        <th>Driver's No.</th>
                         <th>Payment</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
         $sno = 1;
-        $query = "SELECT * FROM users_bookings ORDER BY bus_time";
+        $query = "SELECT u.bus_reg, u.book_date, u.bus_time, u.bus_route,u.status, u.driver_id, u.payments, d.fname, d.lname, d.driver_contact,r.route FROM users_bookings u INNER JOIN drivers d ON d.driver_id = u.driver_id INNER JOIN routes r ON r.route_id = u.bus_route ORDER BY u.bus_time";
         $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
         while($row = mysqli_fetch_array($result)){
         ?>
@@ -171,15 +161,13 @@ include("../includes/header.php");
                         <td><?php echo $row['bus_reg']; ?></td>
                         <td><?php echo $row['book_date'];?></td>
                         <td><?php echo $row['bus_time']; ?></td>
-                        <td><?php echo $row['bus_route']; ?></td>
-                        <td><?php echo $row['driver_id']; ?></td>
+                        <td><?php echo $row['route']; ?></td>
+                        <td><?php echo $row['fname']."  ".$row['lname']; ?></td>
+                        <td><?php echo $row['driver_contact']; ?></td>
                         <td><?php echo $row['payments']; ?></td>
+                        <td><?php echo $row['status']; ?></td>
                         <td text-align="center">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-xs btn-info btn-edit"
-                                    id="<?php echo $row['id']; ?>" title="Edit details" data-target="#confirmModal">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                </button>
+                            <div class="form-group">         
                                 <button type="button" class="btn btn-xs btn-danger btn-delete"
                                     id="<?php echo $row['id']; ?>" title="Delete details" data-toggle="modal"
                                     data-target="#confirmModal">
@@ -200,7 +188,22 @@ include("../includes/footer.php");
 ?>
 <script>
 $(document).ready(function() {
-    $('#example2').DataTable({});
+    $('#example2').DataTable({
+        "columnDefs": [
+      { "width": "5%", "targets": 0 },
+      { "width": "5%", "targets": 1 },
+      { "width": "5%", "targets": 2 },
+      { "width": "5%", "targets": 3 },
+      { "width": "20%", "targets": 4 },
+      { "width": "5%", "targets": 6 },
+      { "width": "5%", "targets": 7 },
+],
+"createdRow": function( row, data, dataIndex){
+                if( dataIndex[8] ==  `completed`){
+                    $(row).css("background-color", "#F4F4F8");
+                }
+            }
+    });
     $('#datepicker').datepicker({
         minDate: new Date()
     });
@@ -221,8 +224,9 @@ $(document).ready(function() {
                 for (var i = 0; i < len; i++) {
                     var id = response[i]['id'];
                     var bus_time = response[i]['bus_time'];
-                    $("#bus_time").append("<option value='" + bus_time + "'>" + bus_time +
-                        "</option>");
+                     var id = response[i]['id'];
+                     $("#bus_time").append("<option value='" + bus_time + "'>" + bus_time +
+                        "</option>") ;
                 }
             }
         })
@@ -243,11 +247,12 @@ $(document).ready(function() {
                 var len = response.length;
                 var price = response[0]['price'];
                 var bus_reg = response[0]['bus_reg'];
+                $("#bus_reg").val(bus_reg);
                 $("#charges").val(price);
                 $(".alert-danger").hide();
                 $(".alert-success").hide();
                 $(".alert-light").html("<h3 class='text-center'><strong> Charges:  KES " +
-                    price + " /= </strong></h3>");
+                    price + " /= </strong></h3>") ;
                 $(".alert-light").show();
             }
         })

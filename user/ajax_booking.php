@@ -12,9 +12,8 @@ if($request == 1){
   $result = mysqli_query($DBcon,$query) or die(mysqli_error($DBcon));
    while($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $response[] = array ('id'=> $row['id'],
-                              'bus_time' =>$row['bus_time'],
-                              'price' => $row['price'],
-                              'bus_reg'=>$row['bus_reg']);
+                              'bus_time' =>$row['bus_time']);           
+                           
   }
   
   echo json_encode($response);
@@ -34,7 +33,7 @@ if($request == 2){
         $response[] = array ('price' => $row['price'],
                             'bus_reg'=>$row['bus_reg']);
      } else {
-       $response[] = array(  'price' => 'No Buses Available at this hour!');
+       $response[] = array(  'price' => '0');
      }
           
   echo json_encode($response);
