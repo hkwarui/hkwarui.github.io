@@ -14,10 +14,8 @@ if(!empty($_FILES['picture']['name'])){
     if(@move_uploaded_file($_FILES['picture']['tmp_name'], $targetPath)){
         //Get current user ID from session
         $eid= $_SESSION['username'];
-
         //Update picture name in the database
         $query = "UPDATE users_details SET user_image = '".$fileName."' WHERE user_code = '$eid'";
-
         $result1 = mysqli_query($DBcon, $query) or die(mysqli_error($DBcon));
         if($result1){
           $result = 1;
